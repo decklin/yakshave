@@ -281,6 +281,16 @@ Binding.prototype = {
 // of brevity.
 
 var yak = {
+    // Principle of least surprise: the callback is called in the XHR's
+    // context with no arguments.
+
+    xhr: function(req, callback) {
+        chrome.extension.sendRequest(req, function(xhr) {
+            if (callback)
+                callback.call(xhr);
+        });
+    },
+
     textElements: [
         HTMLInputElement,
         HTMLTextAreaElement

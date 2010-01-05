@@ -11,7 +11,14 @@ for (var k in defaults) {
     }
 };
 
-// Shitty XHR wrapper, take 3 or 4. Action!
+// The callback here might be a real function in our environment, or
+// it might be a wrapper created by the extension machinery that
+// serializes its args to JSON and sends them over to something that
+// will unpack them and call the content script's original callback.
+// So... We both set the context *and* pass the XHR back as an argument.
+// Normal code will ignore args and use the context, and the extension
+// wrapper will ignore context and send back the arg. It's ugly, but
+// it makes everyone else's life easier.
 
 function xhr(req, callback) {
     var xhr = new XMLHttpRequest();
@@ -21,7 +28,7 @@ function xhr(req, callback) {
     }
     xhr.onreadystatechange = function() {
         if (this.readyState === 4)
-            callback.call(this);
+            callback.call(this, this);
     };
     xhr.send(req.data);
 }
