@@ -240,8 +240,17 @@ Binding.prototype = {
 // bindings, set a property on yak.variables (which is reserved for
 // that purpose). For everything else here, don't touch except through
 // the add() interfaces.
+//
+// textElements is not used internally, but 80% of bindings are going to
+// want to refer to it, so it gets to be a top-level property for the sake
+// of brevity.
 
 var yak = {
+    textElements: [
+        HTMLInputElement,
+        HTMLTextAreaElement
+    ],
+
     bindings: {
         bindingList: [],
         add: function(templates) {
