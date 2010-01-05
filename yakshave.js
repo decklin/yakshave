@@ -1,3 +1,12 @@
+// These are the event types we might care about. Users write 'onkeydown'
+// etc. as the property name since that sort of seems natural from HTML.
+
+var keyEventTypes = [
+    'keydown',
+    'keyup',
+    'keypress'
+];
+
 // I am attempting to match Emacs's notation (GNU Emacs 23.1) here.
 // Entries I'm unsure about are marked with a ???. This should not be
 // taken to imply that the others are all correct.
@@ -336,13 +345,16 @@ bindingPort.onMessage.addListener(function (msg) {
 
 configPort.postMessage(null);
 
-// And while that goes, set up the event listener.
+// And while that goes, set up the event listeners.
 
-document.addEventListener('keydown', function(event) {
-    debug.log(event.keyCode, event);
-    if (dispatch('onkeydown'))
-        event.preventDefault();
-}, false);
+keyEventTypes.forEach(function(t) {
+    document.addEventListener(t, function(event) {
+        if (t === 'keydown')
+            debug.log(t, event.keyCode, event);
+        if (dispatch('on' + t))
+            event.preventDefault();
+    }, false);
+});
 
 function dispatch(t) {
     return yak.bindings.bindingList.some(function(b) {
