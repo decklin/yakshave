@@ -32,4 +32,7 @@ function save() {
     var getValue = function(t) { return t.value; };
     config.set('bindingFiles', $$('file').filter(isChecked).map(getValue));
     config.set('bindingText', $('bindingText').value);
+
+    var reloadPort = chrome.extension.connect({name: 'reloadBindings'});
+    reloadPort.postMessage(null);
 }

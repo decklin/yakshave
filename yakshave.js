@@ -333,12 +333,15 @@ configPort.onMessage.addListener(function (msg) {
 });
 
 bindingPort.onMessage.addListener(function (msg) {
-    try {
-        debug.log('loading', msg.name, '('+msg.text.length+' bytes)');
-        eval('(function(){' + msg.text + '})();');
-    } catch(e) {
-        console.log('Error parsing ' + msg.name, e);
-    }
+    // XXX: this will need to clear bindings and remove their listeners first.
+    msg.bindingFiles.forEach(function(f) {
+        try {
+            debug.log('loading', f.name, '('+f.text.length+' bytes)');
+            eval('(function(){' + f.text + '})();');
+        } catch(e) {
+            console.log('Error parsing ' + f.name, e);
+        }
+    });
 });
 
 // Set it off!

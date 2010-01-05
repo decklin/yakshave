@@ -26,7 +26,41 @@ function xhr(req, callback) {
     xhr.send(req.data);
 }
 
-// TODO: Should send updated bindings to all tabs on change.
+// Global cache so we don't re-fetch them for every content script
+// FIXME: this is racy, a page could load and run the content script
+// immediately after we load and before the files are read.
+
+var bindingFiles;
+
+function fetchBindingFiles() {
+    bindingFiles = [
+        {name: 'options.html', text: config.get('bindingText')}
+    ];
+
+    config.get('bindingFiles').forEach(function(f) {
+        xhr({method: 'GET', url: f}, function() {
+            bindingFiles.push({name: f, text: this.responseText});
+        });
+    });
+}
+
+fetchBindingFiles();
+
+// XHR will go through the simple callback interface. It would be nice
+// if we could put this below with a name (we can only sanely use the
+// callback interface for one thing), but sending the results back
+// asynchronously would be painful for binding authors. Bindings should
+// look easy.
+//
+// See discussion in xhr() above for why the last argument is called
+// 'send' and not 'callback'.
+
+chrome.extension.onRequest.addListener(function(req, src, send) {
+    xhr(req, send);
+});
+
+// Everything else will be on its own port. TODO: Should send updated
+// bindings to all tabs on change.
 
 chrome.extension.onConnect.addListener(function(port) {
     switch (port.name) {
@@ -40,18 +74,14 @@ chrome.extension.onConnect.addListener(function(port) {
         break;
     case 'getBindings':
         port.onMessage.addListener(function(req) {
-            config.get('bindingFiles').forEach(function(f) {
-                xhr({method: 'GET', url: f}, function() {
-                    port.postMessage({
-                        name: f,
-                        text: this.responseText
-                    });
-                });
-            });
             port.postMessage({
-                name: 'options.html',
-                text: config.get('bindingText')
+                bindingFiles: bindingFiles
             });
+        });
+        break;
+    case 'reloadBindings':
+        port.onMessage.addListener(function(req) {
+            fetchBindingFiles();
         });
         break;
     }
