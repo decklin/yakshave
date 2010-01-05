@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>YakShave Help</title>
+  <link rel="stylesheet" type="text/css" href="common/options.css" />
+</head>
+
+<body>
+  <h1>YakShave Help</h1>
+  <p>
+    Binding scripts are <code>eval()</code>'d from the content script.
+    They should call the functions
+  </p>
+  <ul>
+    <li><p><code>yak.functions.add()</code></p></li>
+    <li><p><code>yak.bindings.add()</code></p></li>
+    <li><p><code>yak.xhr()</code></p></li>
+  </ul>
+  <p>
+    and use properties of the object
+  </p>
+  <ul>
+    <li><p><code>yak.variables</code></p></li>
+  </ul>
+  <p>
+    Try not to poke at other properties of <code>yak</code>, as I may
+    rearrange them on a whim.
+  </p>
+  <h2>Calling the <code>add()</code> functions</h2>
+  <p>
+    For <code>yak.functions.add()</code>, pass an object with the
+    property names you want to define and anonymous functions as their
+    values. For <code>yak.bindings.add()</code>, pass an object with
+    Emacs-like key description strings as the properties and objects
+    describing the bindings as their values.
+    See <a href="bindings/base.js">base.js</a> for examples.
+  </p>
+  <h2>Key Descriptions</h2>
+  <p class="warning">
+    As of version 1.0, only single keys (not sequences) are supported.
+  </p>
+  <p>
+    Keys are specified with an Emacs-style string. For a detailed
+    discussion of the real thing, see the EmacsWiki article on
+    <a href="http://www.emacswiki.org/emacs/KeySequence">key
+    sequences</a>. Our parser is somewhat more limited in scope and
+    <strike>more esoteric</strike> non-trivial key
+    sequences <strike>may</strike> probably will not
+    be expressible.
+  </p>
+  <p>
+    Handling of the Meta modifier varies between platforms, so don't
+    depend on it being a particular physical key.
+  </p>
+  <h2>Binding definitions</h2>
+  <p>
+    Binding objects have two kinds of properties:
+  </p>
+  <dl>
+    <dt>
+      <p><code>include</code> and <code>exclude</code></p>
+    </dt>
+    <dd>
+      <p>
+        Lists of which HTML elements the binding should fire on. By
+        default, <code>include</code> is <code>[HTMLElement]</code>,
+        which all elements are subclasses of. If you set it to something
+        else, the binding will match <em>only</em> those elements.
+        <code>yak.TextElements</code> is available for convenience.
+      </p>
+    </dd>
+    <dt>
+      <p>
+        <code>onkeydown</code>, <code>onkeyup</code>,
+        <code>onkeypress</code>
+      </p>
+    </dt>
+    <dd>
+      <p>
+        The function called when the binding fires, with the argument
+        <code>event</code>. Applied in the context
+        of <code>event.target</code>, so for accessing the contents of
+        e.g. a text element you can use <code>this.value</code>.
+        Normally, prevents any standard WebKit binding from firing,
+        but if you return <code>false</code> it will punt.
+      </p>
+    </dd>
+  </dl>
+  <h2>Calling <code>xhr()</code></h2>
+  <p>
+    <code>xhr()</code> takes two arguments: an object representing the
+    request, and (optionally) a callback function. The request object
+    must have at least a <code>url</code> and the
+    HTTP <code>method</code> to use. <code>data</code> for a PUT or
+    POST request and an object representing <code>headers</code> are
+    optional.
+  </p>
+  <p>
+    The callback function should not take any arguments: In will be
+    applied in the XHR object's context, so to get e.g. the text of a
+    response use <code>this.responseText</code>. The callback will be
+    a closure over the event, so you can use <code>event.target</code>
+    to get the object that was previously <code>this</code>.
+  </p>
+</body>
+</html>
