@@ -1,5 +1,6 @@
 var defaults = {
     altIsMeta: true,
+    debugEnabled: false,
     bindingFiles: ['bindings/base.js', 'bindings/emacs.js'],
     bindingText: ''
 };
@@ -32,6 +33,7 @@ chrome.extension.onConnect.addListener(function(port) {
     case 'getConfig':
         port.onMessage.addListener(function(req) {
             port.postMessage({
+                debugEnabled: config.get('debugEnabled'),
                 altIsMeta: config.get('altIsMeta')
             });
         });

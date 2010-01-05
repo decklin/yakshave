@@ -189,6 +189,24 @@ var buckies = [
     'shift'
 ];
 
+// The fact that you can't just do debug.log = console.log still kinda
+// itches me about JavaScript. I mean, I get why not -- we could bring
+// in an implementation of bind() from Prototype.js or whoever to do
+// what I *mean* with that assignment, but it would be overkill for one
+// little function.
+//
+// (If you *don't* get it, check out John Resig's superb tutorial
+// "Learning Advanced JavaScript".)
+
+var debug = {
+    enabled: false,
+    log: function() {
+        if (this.enabled) {
+            console.log.apply(console, arguments);
+        }
+    }
+};
+
 // Our representation of an Emacs-ish key descripton.
 
 function Key(desc) {
@@ -229,7 +247,15 @@ Binding.prototype = {
             var dontNeed = buckies.filter(function(b) { return !key[b]; });
             var isPressed = function(b) { return event[b+'Key']; };
             var notPressed = function(b) { return !event[b+'Key']; };
-            return need.every(isPressed) && dontNeed.every(notPressed);
+            var matched = need.every(isPressed) && dontNeed.every(notPressed);
+
+            var showBucky = function(bs) {
+                return bs.length > 0 ? bs.join('+') : 'none';
+            };
+            debug.log('matching', key.code, 'need ' + showBucky(need),
+                'pressed ' + showBucky(buckies.filter(isPressed)));
+
+            return matched;
         } else {
             return false;
         }
@@ -265,6 +291,7 @@ var yak = {
                 var t = templates[desc];
                 var b = new Binding(desc);
                 for (var k in t) b[k] = t[k];
+                debug.log('bound', desc, 'to', b);
                 this.bindingList.push(b);
             }
         }
@@ -275,29 +302,44 @@ var yak = {
     }
 };
 
-// Request config and bindings (these don't depend on each other yet)
+// We want to be able to debug bindings load, so we need to set up both
+// ports and send out a request to get the debug state first. When the
+// answer comes back, we can talk to the bindings port.
+//
+// You might ask why there isn't just one port and one message. When a
+// binding file is edited/added/removed, we'll want the background
+// page to send us the new set, so we want to leave a connection open.
+// This isn't implemented yet.
 
 var configPort = chrome.extension.connect({name: 'getConfig'});
 var bindingPort = chrome.extension.connect({name: 'getBindings'});
 
 configPort.onMessage.addListener(function (msg) {
+    debug.enabled = msg.debugEnabled;
+
     if (msg.altIsMeta)
         bucky.M = 'alt';
+
+    bindingPort.postMessage(null);
 });
-configPort.postMessage(null);
 
 bindingPort.onMessage.addListener(function (msg) {
     try {
+        debug.log('loading', msg.name, '('+msg.text.length+' bytes)');
         eval('(function(){' + msg.text + '})();');
     } catch(e) {
         console.log('Error parsing ' + msg.name, e);
     }
 });
-bindingPort.postMessage(null);
 
-// And while those go, set up the event listener.
+// Set it off!
+
+configPort.postMessage(null);
+
+// And while that goes, set up the event listener.
 
 document.addEventListener('keydown', function(event) {
+    debug.log(event.keyCode, event);
     if (dispatch('onkeydown'))
         event.preventDefault();
 }, false);
