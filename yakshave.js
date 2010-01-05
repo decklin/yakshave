@@ -251,6 +251,13 @@ var yak = {
         HTMLTextAreaElement
     ],
 
+    functions: {
+        add: function(fns) {
+            for (var f in fns)
+                this[f] = fns[f];
+        }
+    },
+
     bindings: {
         bindingList: [],
         add: function(templates) {
