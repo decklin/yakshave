@@ -311,7 +311,7 @@ var yak = {
                 var b = new Binding(desc);
                 for (var k in t) b[k] = t[k];
                 debug.log('bound', desc, 'to', b);
-                this.bindingList.push(b);
+                this.bindingList.unshift(b);
             }
         }
     },
@@ -369,12 +369,15 @@ keyEventTypes.forEach(function(t) {
     }, false);
 });
 
+// First binding to match (last one added) wins.
+
 function dispatch(t) {
-    return yak.bindings.bindingList.some(function(b) {
-        if (t in b && b.validFor(event.target) && b.matchKey(event))
+    for (var i = 0; i < yak.bindings.bindingList.length; i++) {
+        var b = yak.bindings.bindingList[i];
+        if (t in b && b.validFor(event.target) && b.matchKey(event)) {
+            debug.log('calling', b);
             return (b[t].call(event.target, event) !== false);
-        else
-            return false;
-    });
-    return handled;
+        }
+    }
+    return false;
 }
