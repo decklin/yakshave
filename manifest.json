@@ -1,0 +1,18 @@
+{
+  "name": "YakShave",
+  "version": "1.0",
+  "description": "Yet Another Key-binding System Halfway Approximating Vi or Emacs",
+  "options_page": "options.html",
+  "background_page": "background.html",
+  "content_scripts": [
+    {
+      "js": [ "yakshave.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
+}

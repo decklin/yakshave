@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>YakShave Options</title>
+  <script src="config.js"></script>
+  <script src="options.js"></script>
+</head>
+<body onload="init();">
+  <h1>YakShave Options</h1>
+  <h2>Keyboard Setup</h2>
+  <p>
+    <input type="checkbox" id="altIsMeta" />
+    Use the key labeled "Alt" as Meta
+  </p>
+  <h2>Built-in Binding Sets</h2>
+  <p>None yet.</p>
+  <h2>Additional Bindings</h2>
+  <textarea id="bindingText" cols="80"></textarea>
+  <div class="actions">
+    <p>
+      <input type="button" value="Save Options" onclick="save();" />
+    </p>
+  </div>
+</body>
+</html>
