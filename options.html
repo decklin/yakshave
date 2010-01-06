@@ -9,6 +9,13 @@
 </head>
 <body onload="init();">
   <h1>YakShave Options</h1>
+  <p class="warning">
+    Welcome! If you have Ruby set up on your system, I highly recommend
+    installing <a href="http://www.sinatrarb.com/">Sinatra</a> and running
+    <a href="yakserver-1.0.tar.gz">YakServer</a> (local download), the
+    companion to this extension. It runs on your computer and lets
+    YakShave trigger local commands (e.g. your favorite text editor).
+  </p>
   <p>
     For information on how to write binding scripts,
     see <a href="help.html">the help page</a>.
@@ -32,7 +39,27 @@
     <input type="checkbox" class="file" value="bindings/vi.js" />
     vi-like (<a id="viFile" href="bindings/vi.js">vi.js</a>)
   </p>
+  <p>
+    <input type="checkbox" class="file" value="bindings/yakedit.js" />
+    YakServer text editing (<a id="yakeditFile"
+                               href="bindings/yakedit.js">yakedit.js</a>)
+  </p>
+  <h2>Load from URL</h2>
+  <p>
+    If you're using YakServer, you can drop a file in
+    <kbd>~/.yakserver/public</kbd> and load it here.
+  </p>
+  <p>
+    <input type="checkbox" class="file" id="urlEnabled" />
+    Load bindings from
+    <input type="text" id="bindingUrl" class="url" />
+  </p>
   <h2>Additional Bindings</h2>
+  <p class="warning">
+    Unfortunately, YakShave is not allowed to run content scripts on any
+    extension pages, even its own, so trying to edit this textarea with
+    YakServer won't work.
+  </p>
   <textarea id="bindingText" cols="80"></textarea>
   <div class="actions">
     <p>

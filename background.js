@@ -2,6 +2,8 @@ var defaults = {
     altIsMeta: true,
     debugEnabled: false,
     bindingFiles: ['bindings/base.js', 'bindings/emacs.js'],
+    urlEnabled: false,
+    bindingUrl: 'http://localhost:2562/bindings.js',
     bindingText: ''
 };
 
@@ -44,7 +46,11 @@ function fetchBindingFiles() {
         {name: 'options.html', text: config.get('bindingText')}
     ];
 
-    config.get('bindingFiles').forEach(function(f) {
+    var fileNames = config.get('bindingFiles');
+    if (config.get('urlEnabled'))
+        fileNames.push(config.get('bindingUrl'));
+
+    fileNames.forEach(function(f) {
         xhr({method: 'GET', url: f}, function() {
             bindingFiles.push({name: f, text: this.responseText});
         });

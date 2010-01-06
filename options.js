@@ -18,6 +18,9 @@ function init() {
             t.checked = true;
     });
 
+    $('urlEnabled').checked = config.get('urlEnabled');
+    $('bindingUrl').value = config.get('bindingUrl');
+
     var clamp = function(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); };
     var nRows = function(s) { return clamp(s.split('\n').length, 4, 40); }
 
@@ -31,6 +34,10 @@ function save() {
     var isChecked = function(t) { return t.checked; };
     var getValue = function(t) { return t.value; };
     config.set('bindingFiles', $$('file').filter(isChecked).map(getValue));
+
+    config.set('urlEnabled', $('urlEnabled').checked);
+    config.set('bindingUrl', $('bindingUrl').value);
+
     config.set('bindingText', $('bindingText').value);
 
     var reloadPort = chrome.extension.connect({name: 'reloadBindings'});
