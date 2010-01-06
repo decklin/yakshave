@@ -362,10 +362,13 @@ configPort.postMessage(null);
 
 keyEventTypes.forEach(function(t) {
     document.addEventListener(t, function(event) {
-        if (t === 'keydown')
-            debug.log(t, event.keyCode, event);
-        if (dispatch('on' + t))
+        if (t === 'keydown') {
+            debug.log(t, event, '('+event.keyCode+')');
+        }
+        if (dispatch('on' + t)) {
+            event.stopPropagation();
             event.preventDefault();
+        }
     }, false);
 });
 
