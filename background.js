@@ -1,17 +1,11 @@
-var defaults = {
+config.defaults({
     altIsMeta: true,
     debugEnabled: false,
     bindingFiles: ['bindings/base.js', 'bindings/emacs.js'],
     urlEnabled: false,
     bindingUrl: 'http://localhost:2562/bindings.js',
     bindingText: ''
-};
-
-for (var k in defaults) {
-    if (!config.has(k)) {
-        config.set(k, defaults[k]);
-    }
-};
+});
 
 // The callback here might be a real function in our environment, or
 // it might be a wrapper created by the extension machinery that
