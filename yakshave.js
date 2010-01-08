@@ -342,11 +342,15 @@ configPort.onMessage.addListener(function (msg) {
     bindingPort.postMessage(null);
 });
 
+// XXX: This will need to clear bindings and remove their listeners first.
+
 bindingPort.onMessage.addListener(function (msg) {
-    // XXX: this will need to clear bindings and remove their listeners first.
+    msg.bindingFiles.sort(function(a, b) {
+        return a.priority - b.priority;
+    });
     msg.bindingFiles.forEach(function(f) {
         try {
-            debug.log('loading', f.name, '('+f.text.length+' bytes)');
+            debug.log('loading', f.priority, f.name, f.text.length+'b');
             eval('(function(){' + f.text + '})();');
         } catch(e) {
             console.log('Error parsing ' + f.name, e);

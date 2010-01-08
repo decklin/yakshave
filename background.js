@@ -29,24 +29,35 @@ function xhr(req, callback) {
     xhr.send(req.data);
 }
 
-// Global cache so we don't re-fetch them for every content script
-// FIXME: this is racy, a page could load and run the content script
-// immediately after we load and before the files are read.
+// Binding-script cache. XHR is async, of course, so we can't depend
+// on the list being filled in any particular order. Therefore we give
+// each file a numeric priority corresponding to where they are on the
+// options page (textarea is last, so it always overrides others).
+//
+// FIXME: There is no way for a content script to tell that the list
+// is in fact populated. This is going to fail on a cold start with a
+// bunch of tabs. Maybe.
 
 var bindingFiles;
 
 function fetchBindingFiles() {
-    bindingFiles = [
-        {name: 'options.html', text: config.get('bindingText')}
-    ];
+    bindingFiles = [{
+        name: 'options.html',
+        text: config.get('bindingText'),
+        priority: Number.MAX_VALUE
+    }];
 
     var fileNames = config.get('bindingFiles');
     if (config.get('urlEnabled'))
         fileNames.push(config.get('bindingUrl'));
 
-    fileNames.forEach(function(f) {
+    fileNames.forEach(function(f, i) {
         xhr({method: 'GET', url: f}, function() {
-            bindingFiles.push({name: f, text: this.responseText});
+            bindingFiles.push({
+                name: f,
+                text: this.responseText,
+                priority: i
+            });
         });
     });
 }
