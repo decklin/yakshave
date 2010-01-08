@@ -280,6 +280,8 @@ Binding.prototype = {
 // want to refer to it, so it gets to be a top-level property for the sake
 // of brevity.
 
+var tabsPort = chrome.extension.connect({name: 'tabs'});
+
 var yak = {
     // Principle of least surprise: the callback is called in the XHR's
     // context with no arguments.
@@ -289,6 +291,21 @@ var yak = {
             if (callback)
                 callback.call(xhr);
         });
+    },
+
+    tabs: {
+        create: function(props) {
+            tabsPort.postMessage({create: props});
+        },
+        update: function(props) {
+            tabsPort.postMessage({update: props});
+        },
+        move: function(props) {
+            tabsPort.postMessage({move: props});
+        },
+        remove: function(props) {
+            tabsPort.postMessage({remove: props});
+        }
     },
 
     textElements: [

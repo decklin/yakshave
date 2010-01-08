@@ -16,6 +16,7 @@
     <li><p><code>yak.functions.add()</code></p></li>
     <li><p><code>yak.bindings.add()</code></p></li>
     <li><p><code>yak.xhr()</code></p></li>
+    <li><p><code>yak.tabs.*()</code></p></li>
   </ul>
   <p>
     and use properties of the object
@@ -102,6 +103,22 @@
     response use <code>this.responseText</code>. The callback will be
     a closure over the event, so you can use <code>event.target</code>
     to get the object that was previously <code>this</code>.
+  </p>
+  <h2>Calling the <code>yak.tabs</code> functions</h2>
+  <p><code>yak.tabs</code> currently has 4 functions:</p>
+  <ul>
+    <li><p><code>create()</code></p></li>
+    <li><p><code>update()</code></p></li>
+    <li><p><code>move()</code></p></li>
+    <li><p><code>remove()</code></p></li>
+  </ul>
+  <p>
+    They each take one argument, the respective kinds of properties
+    object described in
+    <a href="http://code.google.com/chrome/extensions/tabs.html">the
+    <code>chrome.tabs</code> documentation</a>. As of version 1.0,
+    only the current tab can be updated/moved/removed, so there is no
+    <code>tabId</code> argument.
   </p>
 </body>
 </html>

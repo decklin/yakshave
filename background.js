@@ -102,5 +102,31 @@ chrome.extension.onConnect.addListener(function(port) {
             fetchBindingFiles();
         });
         break;
+    case 'tabs':
+        port.onMessage.addListener(function(req) {
+            handleTabReq(req);
+        });
+        break;
     }
 });
+
+// Just current tab for now, but we should figure out a way to let
+// bindings select and manipulate the tab object.
+
+function handleTabReq(req) {
+    if (req.create) {
+        chrome.tabs.create(req.create);
+    } else if (req.update) {
+        chrome.tabs.getSelected(null, function(tab) {
+            chrome.tabs.update(tab.id, req.update);
+        });
+    } else if (req.move) {
+        chrome.tabs.getSelected(null, function(tab) {
+            chrome.tabs.move(tab.id, req.move);
+        });
+    } else if (req.remove) {
+        chrome.tabs.getSelected(null, function(tab) {
+            chrome.tabs.remove(tab.id, req.remove);
+        });
+    }
+}
