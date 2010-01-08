@@ -18,6 +18,12 @@ yak.functions.add({
     scrollCols: function(n) {
         window.scrollBy(n * lineWidth, 0);
     },
+    scrollPages: function(n) {
+        var direction = n >= 0 ? 1 : -1;
+        var distance = Math.abs(n) * window.innerHeight - lineHeight;
+        window.scrollBy(0, direction * distance);
+    },
+
     colLeft: function() {
         yak.functions.scrollCols(-1);
     },
@@ -30,34 +36,41 @@ yak.functions.add({
     lineDown: function() {
         yak.functions.scrollLines(1);
     },
-    scrollPages: function(n) {
-        var direction = n >= 0 ? 1 : -1;
-        var distance = Math.abs(n) * window.innerHeight - lineHeight;
-        window.scrollBy(0, direction * distance);
-    },
+
     pageDown: function() {
         yak.functions.scrollPages(1);
     },
     pageUp: function() {
         yak.functions.scrollPages(-1);
     },
+
     gotoBottom: function() {
-        window.scroll(0, document.height);
+        window.scroll(window.scrollX, document.height);
     },
     gotoTop: function() {
-        window.scroll(0, 0);
+        window.scroll(window.scrollX, 0);
+    },
+    gotoLeft: function() {
+        window.scroll(0, window.scrollY);
+    },
+    gotoRight: function() {
+        window.scroll(document.width, window.scrollY);
     }
 });
 
-// A simple binding that can be used in both the Emacs and vi flavors.
-// I am assuming that most people who have gotten this far were raised
-// on *nix Netscape's behavior of backspace = page up. Firefox had an
-// option kludge to do the same.
-//
-// If you are a Mac user and really hate this and think it should be
-// broken out, holler at me. I'll think of something else to use here.
+// A few simple bindings that can be used in both the Emacs and vi
+// flavors.
 
 yak.bindings.add({
+    '<f2>': {
+        onkeydown: function(event) {
+            yak.tabs.create({url: 'view-source:' + location.href});
+        }
+    },
+    // I am assuming that most people who have gotten this far were
+    // raised on *nix Netscape's behavior of backspace = page up.
+    // Firefox had an option kludge to do the same. (If you are a Mac
+    // user and really hate this, holler at me.)
     'DEL': {
         exclude: yak.textElements,
         onkeydown: yak.functions.pageUp

@@ -26,6 +26,14 @@ yak.bindings.add({
         exclude: yak.textElements,
         onkeydown: yak.functions.gotoBottom
     },
+    '0': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.gotoLeft
+    },
+    '$': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.gotoRight
+    },
     'C-d': {
         exclude: yak.textElements,
         onkeydown: function(event) {
