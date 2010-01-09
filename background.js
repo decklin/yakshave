@@ -18,15 +18,31 @@ config.defaults({
 
 function xhr(req, callback) {
     var xhr = new XMLHttpRequest();
+
     xhr.open(req.method, req.url, true);
-    for (h in req.headers) {
+    for (var h in req.headers) {
         xhr.setRequestHeader(h, req.headers[h]);
     }
+
     xhr.onreadystatechange = function() {
         if (this.readyState === 4)
             callback.call(this, this);
     };
-    xhr.send(req.data);
+
+    if (typeof req.data === 'string') {
+        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.send(req.data);
+    } else if (typeof req.data === 'object') {
+        var pairs = [];
+        for (var k in req.data) {
+            pairs.push(k + '=' + encodeURIComponent(req.data[k]))
+        }
+        xhr.setRequestHeader('Content-Type',
+                             'application/x-www-form-urlencoded');
+        xhr.send(pairs.join('&'));
+    } else {
+        xhr.send(null);
+    }
 }
 
 // Binding-script cache. XHR is async, of course, so we can't depend

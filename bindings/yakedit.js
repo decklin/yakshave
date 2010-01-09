@@ -13,7 +13,6 @@ yak.bindings.add({
             var req = {
                 method: 'POST',
                 url: url,
-                headers: {'Content-Type': 'text/plain; charset=utf-8'},
                 data: this.value
             };
             yak.xhr(req, function() {
@@ -23,8 +22,11 @@ yak.bindings.add({
     },
     'C-S': {
         onkeydown: function(event) {
-            var url = 'http://localhost:2562/style/edit?url=' + location.href;
-            yak.xhr({method: 'POST', url: url});
+            yak.xhr({
+                method: 'POST',
+                url: 'http://localhost:2562/style/edit',
+                data: {url: location.href}
+            });
         }
     }
 });
