@@ -1,11 +1,15 @@
 YakShave
 ========
 
-All contents of this package not otherwise mentioned below are:
+Contents of this package not otherwise mentioned below are:
 
     Copyright © 2009 Decklin Foster <decklin@red-bean.com>
 
-And distributed under the following license ("MIT"):
+Base64 encoding routines (base64.js) are:
+
+    Copyright © 2008 Fred Palmer <fred.palmer_at_gmail.com>
+
+All of the above are distributed under the following license ("MIT"):
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
