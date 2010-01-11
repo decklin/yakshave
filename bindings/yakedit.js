@@ -13,6 +13,7 @@ yak.bindings.add({
             var req = {
                 method: 'POST',
                 url: url,
+                authenticate: true,
                 data: this.value
             };
             yak.xhr(req, function() {
@@ -25,6 +26,7 @@ yak.bindings.add({
             yak.xhr({
                 method: 'POST',
                 url: 'http://localhost:2562/style/edit',
+                authenticate: true,
                 data: {url: location.href}
             });
         }

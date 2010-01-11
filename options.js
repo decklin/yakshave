@@ -26,6 +26,9 @@ function init() {
 
     $('bindingText').value = config.get('bindingText');
     $('bindingText').rows = nRows(config.get('bindingText'));
+
+    $('username').value = config.get('username');
+    $('password').value = config.get('password');
 }
 
 function save() {
@@ -39,6 +42,9 @@ function save() {
     config.set('bindingUrl', $('bindingUrl').value);
 
     config.set('bindingText', $('bindingText').value);
+
+    config.set('username', $('username').value);
+    config.set('password', $('password').value);
 
     var reloadPort = chrome.extension.connect({name: 'reloadBindings'});
     reloadPort.postMessage(null);

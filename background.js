@@ -4,7 +4,9 @@ config.defaults({
     bindingFiles: ['bindings/base.js', 'bindings/emacs.js'],
     urlEnabled: false,
     bindingUrl: 'http://localhost:2562/bindings.js',
-    bindingText: ''
+    bindingText: '',
+    username: '',
+    password: ''
 });
 
 // The callback here might be a real function in our environment, or
@@ -22,6 +24,12 @@ function xhr(req, callback) {
     xhr.open(req.method, req.url, true);
     for (var h in req.headers) {
         xhr.setRequestHeader(h, req.headers[h]);
+    }
+
+    if (req.authenticate) {
+        var creds = config.get('username') + ':' + config.get('password');
+        var auth = 'Basic ' + Base64.encode(creds);
+        xhr.setRequestHeader('Authorization', auth);
     }
 
     xhr.onreadystatechange = function() {
