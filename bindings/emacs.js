@@ -69,5 +69,10 @@ yak.bindings.add({
     't': {
         exclude: yak.textElements,
         onkeydown: yak.functions.goRoot
+    },
+    'M-:': {
+        onkeydown: function(event) {
+            eval(prompt('Eval:'));
+        }
     }
 });
