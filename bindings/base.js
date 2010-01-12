@@ -76,6 +76,20 @@ yak.functions.add({
     },
     tabRight: function() {
         yak.functions.tabSelectRelative(1);
+    },
+
+    goBack: function() {
+        history.go(-1)
+    },
+    goUp: function() {
+        components = location.pathname.split('/');
+        if (components.pop() === '') components.pop();
+        components.push('');
+        location.href = location.protocol + '//' + location.host +
+            components.join('/');
+    },
+    goRoot: function() {
+        location.href = location.protocol + '//' + location.host + '/';
     }
 });
 

@@ -45,5 +45,9 @@ yak.bindings.add({
         onkeydown: function(event) {
             yak.functions.scrollPages(-0.5);
         }
+    },
+    'B': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.goBack
     }
 });

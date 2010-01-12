@@ -57,5 +57,17 @@ yak.bindings.add({
     'M-p': {
         exclude: yak.textElements,
         onkeydown: yak.functions.tabLeft
+    },
+    'l': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.goBack
+    },
+    'u': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.goUp
+    },
+    't': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.goRoot
     }
 });
