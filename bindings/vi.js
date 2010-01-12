@@ -34,6 +34,14 @@ yak.bindings.add({
         exclude: yak.textElements,
         onkeydown: yak.functions.gotoRight
     },
+    'C-e': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.lineDown
+    },
+    'C-y': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.lineUp
+    },
     'C-d': {
         exclude: yak.textElements,
         onkeydown: function(event) {
