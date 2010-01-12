@@ -49,5 +49,13 @@ yak.bindings.add({
     'M->': {
         exclude: yak.textElements,
         onkeydown: yak.functions.gotoBottom
+    },
+    'M-n': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.tabRight
+    },
+    'M-p': {
+        exclude: yak.textElements,
+        onkeydown: yak.functions.tabLeft
     }
 });

@@ -88,21 +88,40 @@ function fetchBindingFiles() {
 
 fetchBindingFiles();
 
-// XHR will go through the simple callback interface. It would be nice
-// if we could put this below with a name (we can only sanely use the
-// callback interface for one thing), but sending the results back
-// asynchronously would be painful for binding authors. Bindings should
-// look easy.
+// Every request that needs to implicitly hold on to a callback will
+// use the "simple" interface. The request should always have a 'type'
+// property set so we can decide what to do with it.
 //
 // See discussion in xhr() above for why the last argument is called
 // 'send' and not 'callback'.
 
-chrome.extension.onRequest.addListener(function(req, src, send) {
-    xhr(req, send);
+chrome.extension.onRequest.addListener(function(msg, src, send) {
+    switch (msg.type) {
+    case 'xhr':
+        xhr(msg.req, send);
+        break;
+    case 'tabs.getAllInWindow':
+        chrome.tabs.getAllInWindow(msg.id, send);
+        break;
+    case 'tabs.getSelected':
+        chrome.tabs.getSelected(msg.id, send);
+        break;
+    case 'tabs.create':
+        chrome.tabs.create(msg.info, send);
+        break;
+    case 'tabs.update':
+        chrome.tabs.update(msg.id, msg.info, send);
+        break;
+    case 'tabs.move':
+        chrome.tabs.move(msg.id, msg.info, send);
+        break;
+    case 'tabs.remove':
+        chrome.tabs.remove(msg.id, msg.info, send);
+        break;
+    }
 });
 
-// Everything else will be on its own port. TODO: Should send updated
-// bindings to all tabs on change.
+// Things that are purely message-based will use ports.
 
 chrome.extension.onConnect.addListener(function(port) {
     switch (port.name) {
@@ -122,35 +141,10 @@ chrome.extension.onConnect.addListener(function(port) {
         });
         break;
     case 'reloadBindings':
+        // TODO: Should send updated bindings to all tabs on change.
         port.onMessage.addListener(function(req) {
             fetchBindingFiles();
         });
         break;
-    case 'tabs':
-        port.onMessage.addListener(function(req) {
-            handleTabReq(req);
-        });
-        break;
     }
 });
-
-// Just current tab for now, but we should figure out a way to let
-// bindings select and manipulate the tab object.
-
-function handleTabReq(req) {
-    if (req.create) {
-        chrome.tabs.create(req.create);
-    } else if (req.update) {
-        chrome.tabs.getSelected(null, function(tab) {
-            chrome.tabs.update(tab.id, req.update);
-        });
-    } else if (req.move) {
-        chrome.tabs.getSelected(null, function(tab) {
-            chrome.tabs.move(tab.id, req.move);
-        });
-    } else if (req.remove) {
-        chrome.tabs.getSelected(null, function(tab) {
-            chrome.tabs.remove(tab.id, req.remove);
-        });
-    }
-}

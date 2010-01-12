@@ -55,6 +55,27 @@ yak.functions.add({
     },
     gotoRight: function() {
         window.scroll(document.width, window.scrollY);
+    },
+
+    tabSelect: function(n) {
+        yak.tabs.getAllInWindow(null, function(tabs) {
+            tabs.forEach(function(t) {
+                if (t.index === n) {
+                    yak.tabs.update(t.id, {selected: true});
+                }
+            });
+        });
+    },
+    tabSelectRelative: function(n) {
+        yak.tabs.getSelected(null, function(tab) {
+            yak.functions.tabSelect(tab.index + n);
+        });
+    },
+    tabLeft: function() {
+        yak.functions.tabSelectRelative(-1);
+    },
+    tabRight: function() {
+        yak.functions.tabSelectRelative(1);
     }
 });
 

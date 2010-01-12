@@ -280,31 +280,39 @@ Binding.prototype = {
 // want to refer to it, so it gets to be a top-level property for the sake
 // of brevity.
 
-var tabsPort = chrome.extension.connect({name: 'tabs'});
+function tabReq(msg, callback) {
+    chrome.extension.sendRequest(msg, callback || function() { return; });
+}
 
 var yak = {
     // Principle of least surprise: the callback is called in the XHR's
     // context with no arguments.
 
     xhr: function(req, callback) {
-        chrome.extension.sendRequest(req, function(xhr) {
+        chrome.extension.sendRequest({type: 'xhr', req: req}, function(xhr) {
             if (callback)
                 callback.call(xhr);
         });
     },
 
     tabs: {
-        create: function(props) {
-            tabsPort.postMessage({create: props});
+        getAllInWindow: function(id, callback) {
+            tabReq({type: 'tabs.getAllInWindow', id: id}, callback);
         },
-        update: function(props) {
-            tabsPort.postMessage({update: props});
+        getSelected: function(id, callback) {
+            tabReq({type: 'tabs.getSelected', id: id}, callback);
         },
-        move: function(props) {
-            tabsPort.postMessage({move: props});
+        create: function(info, callback) {
+            tabReq({type: 'tabs.create', info: info}, callback);
         },
-        remove: function(props) {
-            tabsPort.postMessage({remove: props});
+        update: function(id, info, callback) {
+            tabReq({type: 'tabs.update', id: id, info: info}, callback);
+        },
+        move: function(id, info, callback) {
+            tabReq({type: 'tabs.move', id: id, info: info}, callback);
+        },
+        remove: function(id, info, callback) {
+            tabReq({type: 'tabs.remove', id: id, info: info}, callback);
         }
     },
 
