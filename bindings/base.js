@@ -58,7 +58,7 @@ yak.functions.add({
     }
 });
 
-// A few simple bindings that can be used in both the Emacs and vi
+// A few simple bindings that will be welcome in both the Emacs and vi
 // flavors.
 
 yak.bindings.add({
@@ -66,13 +66,5 @@ yak.bindings.add({
         onkeydown: function(event) {
             yak.tabs.create({url: 'view-source:' + location.href});
         }
-    },
-    // I am assuming that most people who have gotten this far were
-    // raised on *nix Netscape's behavior of backspace = page up.
-    // Firefox had an option kludge to do the same. (If you are a Mac
-    // user and really hate this, holler at me.)
-    'DEL': {
-        exclude: yak.textElements,
-        onkeydown: yak.functions.pageUp
     }
 });
