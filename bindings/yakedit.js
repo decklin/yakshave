@@ -21,7 +21,7 @@ yak.bindings.add({
             });
         }
     },
-    'C-S': {
+    'M-C-s': {
         onkeydown: function(event) {
             yak.xhr({
                 method: 'POST',
