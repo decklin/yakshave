@@ -9,7 +9,7 @@ Base64 encoding routines (base64.js) are:
 
     Copyright © 2008 Fred Palmer <fred.palmer_at_gmail.com>
 
-All of the above are distributed under the following license ("MIT"):
+Both of the above are distributed under the following license ("MIT"):
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
@@ -31,3 +31,35 @@ All of the above are distributed under the following license ("MIT"):
     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
     OTHER DEALINGS IN THE SOFTWARE.
+
+Icons frome the GNOME project are Copyright © 2002-2008:
+
+    Ulisse Perusin <uli.peru@gmail.com>
+    Riccardo Buzzotta <raozuzu@yahoo.it>
+    Josef Vybíral <cornelius@vybiral.info>
+    Hylke Bons <h.bons@student.rug.nl>
+    Ricardo González <rick@jinlabs.com>
+    Lapo Calamandrei <calamandrei@gmail.com>
+    Rodney Dawes <dobey@novell.com>
+    Luca Ferretti <elle.uca@libero.it>
+    Tuomas Kuosmanen <tigert@gimp.org>
+    Andreas Nilsson <nisses.mail@home.se>
+    Jakub Steiner <jimmac@novell.com>
+
+And distributed under the following license ("GPL-2"):
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Please see the file COPYING for the text of the GNU GPL.

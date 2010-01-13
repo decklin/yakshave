@@ -1,7 +1,13 @@
 {
   "name": "YakShave",
   "version": "1.0",
-  "description": "Yet Another Key-binding System Halfway Approximating Vi or Emacs",
+  "description":
+    "Yet Another Key-binding System Halfway Approximating Vi or Emacs",
+  "icons": {
+    "32": "keyboard-32.png",
+    "48": "keyboard-shortcuts-48.png",
+    "128": "keyboard-shortcuts-128.png"
+  },
   "options_page": "options.html",
   "background_page": "background.html",
   "content_scripts": [
