@@ -336,10 +336,11 @@ var yak = {
                 var b = new Binding(desc);
                 for (var k in t) b[k] = t[k];
                 debug.log('bound', desc, 'to', b);
-                this.bindingList.unshift(b);
+                yak.bindingMap[desc] = b;
             }
         }
     },
+    bindingMap: {},
 
     variables: {
         foo: 'bar'
@@ -391,21 +392,25 @@ configPort.postMessage(null);
 
 keyEventTypes.forEach(function(t) {
     document.addEventListener(t, function(event) {
-        if (t === 'keydown') {
-            debug.log(t, event, '('+event.keyCode+')');
+        if (event.type === 'keydown') {
+            debug.log(event.type, event, '('+event.keyCode+')');
         }
-        if (dispatch('on' + t)) {
+        if (dispatch(event)) {
             event.stopPropagation();
             event.preventDefault();
         }
     }, false);
 });
 
-// First binding to match (last one added) wins.
+// First binding to match wins, but descriptions are unique so the
+// fact that this iterates in no defined order should not be a
+// problem. Returns whether or not the binding was considered to have
+// "handled" the event.
 
-function dispatch(t) {
-    for (var i = 0; i < yak.bindings.bindingList.length; i++) {
-        var b = yak.bindings.bindingList[i];
+function dispatch(event) {
+    var t = 'on' + event.type;
+    for (var d in yak.bindingMap) {
+        var b = yak.bindingMap[d];
         if (t in b && b.validFor(event.target) && b.matchKey(event)) {
             debug.log('calling', b);
             return (b[t].call(event.target, event) !== false);
