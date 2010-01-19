@@ -12,7 +12,7 @@ yak.bindings.add({
     'C-u': {
         include: yak.textElements,
         onkeydown: function(event) {
-            event.target.value = ''
+            event.target.value = '';
         }
     }
 });

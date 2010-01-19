@@ -43,7 +43,7 @@ function xhr(req, callback) {
     } else if (typeof req.data === 'object') {
         var pairs = [];
         for (var k in req.data) {
-            pairs.push(k + '=' + encodeURIComponent(req.data[k]))
+            pairs.push(k + '=' + encodeURIComponent(req.data[k]));
         }
         xhr.setRequestHeader('Content-Type',
                              'application/x-www-form-urlencoded');

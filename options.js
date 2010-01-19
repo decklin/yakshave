@@ -22,7 +22,7 @@ function init() {
     $('bindingUrl').value = config.get('bindingUrl');
 
     var clamp = function(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); };
-    var nRows = function(s) { return clamp(s.split('\n').length, 4, 40); }
+    var nRows = function(s) { return clamp(s.split('\n').length, 4, 40); };
 
     $('bindingText').value = config.get('bindingText');
     $('bindingText').rows = nRows(config.get('bindingText'));

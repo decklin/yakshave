@@ -7,7 +7,7 @@
 
 var lineHeight = 40;
 
-// The same? Why not.
+// Horizontal scrolling seems to use the same number of pixels.
 
 var lineWidth = 40;
 
@@ -79,10 +79,10 @@ yak.functions.add({
     },
 
     goBack: function() {
-        history.go(-1)
+        history.go(-1);
     },
     goUp: function() {
-        components = location.pathname.split('/');
+        var components = location.pathname.split('/');
         if (components.pop() === '') components.pop();
         components.push('');
         location.href = location.protocol + '//' + location.host +
@@ -93,8 +93,10 @@ yak.functions.add({
     }
 });
 
-// A few simple bindings that will be welcome in both the Emacs and vi
-// flavors.
+// A simple binding that will be welcome in both the Emacs and vi
+// flavors (since they each will want C-u for something else.) This
+// isn't particularly "natural" to me (I think it's from IE), but it
+// is at least not pulled out of thin air.
 
 yak.bindings.add({
     '<f2>': {

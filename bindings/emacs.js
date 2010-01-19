@@ -13,7 +13,7 @@ yak.bindings.add({
         exclude: yak.textElements,
         onkeydown: function(event) {
             if (window.innerWidth + window.scrollX - 15 < document.width)
-                yak.functions.colRight();
+                return yak.functions.colRight();
             else
                 return false;
         }
@@ -58,6 +58,12 @@ yak.bindings.add({
         exclude: yak.textElements,
         onkeydown: yak.functions.tabLeft
     },
+    'M-:': {
+        onkeydown: function(event) {
+            eval(prompt('Eval:'));
+        }
+    },
+    // These should probably be moved to a new file (info.js)
     'l': {
         exclude: yak.textElements,
         onkeydown: yak.functions.goBack
@@ -69,10 +75,5 @@ yak.bindings.add({
     't': {
         exclude: yak.textElements,
         onkeydown: yak.functions.goRoot
-    },
-    'M-:': {
-        onkeydown: function(event) {
-            eval(prompt('Eval:'));
-        }
     }
 });
