@@ -22,10 +22,13 @@ function init() {
     $('bindingUrl').value = config.get('bindingUrl');
 
     var clamp = function(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); };
-    var nRows = function(s) { return clamp(s.split('\n').length, 4, 40); };
+    var lines = function(s) { return s.split('\n').length; };
 
     $('bindingText').value = config.get('bindingText');
-    $('bindingText').rows = nRows(config.get('bindingText'));
+    $('bindingText').rows = clamp(lines(config.get('bindingText')), 4, 40);
+
+    $('blacklist').value = config.get('blacklist').join('\n');
+    $('blacklist').rows = clamp(config.get('blacklist').length, 4, 40);
 
     $('username').value = config.get('username');
     $('password').value = config.get('password');
@@ -42,6 +45,8 @@ function save() {
     config.set('bindingUrl', $('bindingUrl').value);
 
     config.set('bindingText', $('bindingText').value);
+
+    config.set('blacklist', $('blacklist').value.split('\n'));
 
     config.set('username', $('username').value);
     config.set('password', $('password').value);

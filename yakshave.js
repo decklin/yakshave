@@ -368,12 +368,14 @@ var configPort = chrome.extension.connect({name: 'getConfig'});
 var bindingPort = chrome.extension.connect({name: 'getBindings'});
 
 configPort.onMessage.addListener(function (msg) {
-    debug.enabled = msg.debugEnabled;
-
+    if (msg.debugEnabled)
+        debug.enabled = true;
     if (msg.altIsMeta)
         bucky.M = 'alt';
-
-    bindingPort.postMessage(null);
+    if (msg.bindingEnabled)
+        bindingPort.postMessage(null);
+    else
+        debug.log('binding disabled');
 });
 
 // XXX: This will need to clear bindings and remove their listeners first.
@@ -390,25 +392,29 @@ bindingPort.onMessage.addListener(function (msg) {
             console.log('Error parsing ' + f.name, e);
         }
     });
+    setupListeners();
 });
 
 // Set it off!
 
-configPort.postMessage(null);
+configPort.postMessage(location.href);
 
-// And while that goes, set up the event listeners.
+// If we are enabled for the current URL, we'll call this once the reply
+// comes back.
 
-keyEventTypes.forEach(function(t) {
-    document.addEventListener(t, function(event) {
-        if (event.type === 'keydown') {
-            debug.log(event.type, event, '('+event.keyCode+')');
-        }
-        if (dispatch(event)) {
-            event.stopPropagation();
-            event.preventDefault();
-        }
-    }, false);
-});
+function setupListeners() {
+    keyEventTypes.forEach(function(t) {
+        document.addEventListener(t, function(event) {
+            if (event.type === 'keydown') {
+                debug.log(event.type, event, '('+event.keyCode+')');
+            }
+            if (dispatch(event)) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        }, false);
+    });
+}
 
 // First binding to match wins, but descriptions are unique so the
 // fact that this iterates in no defined order should not be a

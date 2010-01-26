@@ -5,6 +5,10 @@ config.defaults({
     urlEnabled: false,
     bindingUrl: 'http://localhost:2562/bindings.js',
     bindingText: '',
+    blacklist: [
+        '^https?://mail.google.[a-z]+/',
+        '^https?://www.google.[a-z]+/reader'
+    ],
     username: '',
     password: ''
 });
@@ -129,7 +133,8 @@ chrome.extension.onConnect.addListener(function(port) {
         port.onMessage.addListener(function(req) {
             port.postMessage({
                 debugEnabled: config.get('debugEnabled'),
-                altIsMeta: config.get('altIsMeta')
+                altIsMeta: config.get('altIsMeta'),
+                bindingEnabled: !isBlacklisted(req)
             });
         });
         break;
@@ -148,3 +153,9 @@ chrome.extension.onConnect.addListener(function(port) {
         break;
     }
 });
+
+function isBlacklisted(url) {
+    return config.get('blacklist').some(function(pat) {
+        return RegExp(pat).test(url);
+    });
+}
