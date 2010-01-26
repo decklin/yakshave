@@ -10,6 +10,10 @@ function $$(classname) {
     return elts;
 }
 
+function lines(s) { return s ? s.split('\n') : []; }
+function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
+function rows(n) { return clamp(n, 4, 40); }
+
 function init() {
     $('altIsMeta').checked = config.get('altIsMeta');
 
@@ -21,14 +25,11 @@ function init() {
     $('urlEnabled').checked = config.get('urlEnabled');
     $('bindingUrl').value = config.get('bindingUrl');
 
-    var clamp = function(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); };
-    var lines = function(s) { return s.split('\n').length; };
-
     $('bindingText').value = config.get('bindingText');
-    $('bindingText').rows = clamp(lines(config.get('bindingText')), 4, 40);
+    $('bindingText').rows = rows(lines(config.get('bindingText')).length)
 
     $('blacklist').value = config.get('blacklist').join('\n');
-    $('blacklist').rows = clamp(config.get('blacklist').length, 4, 40);
+    $('blacklist').rows = rows(config.get('blacklist').length);
 
     $('username').value = config.get('username');
     $('password').value = config.get('password');
@@ -46,7 +47,7 @@ function save() {
 
     config.set('bindingText', $('bindingText').value);
 
-    config.set('blacklist', $('blacklist').value.split('\n'));
+    config.set('blacklist', lines($('blacklist').value));
 
     config.set('username', $('username').value);
     config.set('password', $('password').value);
