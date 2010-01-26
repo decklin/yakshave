@@ -6,8 +6,8 @@ config.defaults({
     bindingUrl: 'http://localhost:2562/bindings.js',
     bindingText: '',
     blacklist: [
-        '^https?://mail.google.[a-z]+/',
-        '^https?://www.google.[a-z]+/reader'
+        '^https?://mail\\.google\\.[a-z]+/',
+        '^https?://www\\.google\\.[a-z]+/reader'
     ],
     username: '',
     password: ''
