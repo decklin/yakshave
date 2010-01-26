@@ -90,6 +90,10 @@ yak.functions.add({
     },
     goRoot: function() {
         location.href = location.protocol + '//' + location.host + '/';
+    },
+
+    pass: function() {
+        return false;
     }
 });
 

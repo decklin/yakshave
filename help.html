@@ -89,6 +89,16 @@
       </p>
     </dd>
   </dl>
+  <h2>The standard library</h2>
+  <p>
+    <a href="bindings/base.js">base.js</a> adds a number of functions
+    that can be used as the <code>onkeypress</code> (etc.) of a
+    binding. The standard Emacs, info, and vi binding sets are almost
+    entirely made out of these functions. If you want to use a default
+    binding set but don't want a particular binding in it, you can
+    re-bind that key to <code>yak.functions.pass</code> (which simply
+    returns false).
+  </p>
   <h2>Calling <code>xhr()</code></h2>
   <p>
     <code>xhr()</code> takes two arguments: an object representing the
