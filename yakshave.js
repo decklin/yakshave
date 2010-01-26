@@ -244,9 +244,17 @@ Binding.prototype = {
     include: [HTMLElement],
     exclude: [],
 
+    // This should be more flexible. For now, bail out on anything with
+    // contentEditable unconditionally. (I'm not sure why contentEditable
+    // is a string and not a boolean.)
+
     validFor: function(elt) {
-        var eltIs = function(c) { return elt instanceof c; };
-        return this.include.some(eltIs) && !this.exclude.some(eltIs);
+        if (elt.contentEditable === 'true') {
+            return false;
+        } else {
+            var eltIs = function(c) { return elt instanceof c; };
+            return this.include.some(eltIs) && !this.exclude.some(eltIs);
+        }
     },
 
     matchKey: function(event) {
