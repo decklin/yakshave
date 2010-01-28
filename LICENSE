@@ -3,7 +3,7 @@ YakShave
 
 Contents of this package not otherwise mentioned below are:
 
-    Copyright © 2009 Decklin Foster <decklin@red-bean.com>
+    Copyright © 2009-2010 Decklin Foster <decklin@red-bean.com>
 
 Base64 encoding routines (base64.js) are:
 
