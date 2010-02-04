@@ -293,13 +293,13 @@ function tabReq(msg, callback) {
 }
 
 var yak = {
-    // Principle of least surprise: the callback is called in the XHR's
+    // Principle of least surprise: the callback is applied in the XHR's
     // context with no arguments.
 
     xhr: function(req, callback) {
         chrome.extension.sendRequest({type: 'xhr', req: req}, function(xhr) {
             if (callback)
-                callback.call(xhr);
+                callback.apply(xhr);
         });
     },
 
