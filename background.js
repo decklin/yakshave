@@ -14,9 +14,8 @@ function xhr(req, callback) {
     var xhr = new XMLHttpRequest();
 
     xhr.open(req.method, req.url, true);
-    for (var h in req.headers) {
+    for (var h in req.headers)
         xhr.setRequestHeader(h, req.headers[h]);
-    }
 
     if (req.authenticate) {
         var creds = config.get('username') + ':' + config.get('password');
