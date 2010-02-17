@@ -6,13 +6,14 @@ yak.bindings.add({
         exclude: yak.textElements,
         onkeydown: yak.functions.colLeft
     },
-    // This one is problematic in that it shadows the find box (and I don't
-    // know how to trigger said box from a C-s binding). Kludge it with a
-    // hardcoded scrollbar width to see if we can scroll right or not.
+    // This one is problematic in that it shadows the find box (and I
+    // don't know how to trigger said box from a C-s binding). Kludge it
+    // by checking if we are scrolled all the way to the right (modulo
+    // scrollbar width).
     'C-f': {
         exclude: yak.textElements,
         onkeydown: function(event) {
-            if (window.innerWidth + window.scrollX - 15 < document.width)
+            if (window.innerWidth + window.scrollX < document.width)
                 return yak.functions.colRight();
             else
                 return false;
