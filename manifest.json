@@ -1,6 +1,6 @@
 {
   "name": "YakShave",
-  "version": "1.2",
+  "version": "1.3",
   "description":
     "Yet Another Key-binding System Halfway Approximating Vi or Emacs",
   "icons": {
