@@ -303,6 +303,18 @@ var yak = {
         });
     },
 
+    unsafeEval: function(code) {
+        var script = document.createElement('script');
+        script.textContent = '(function(){' + code + '})();';
+        document.body.appendChild(script);
+    },
+
+    unsafeLoad: function(url) {
+        var script = document.createElement('script');
+        script.src = url;
+        document.body.appendChild(script);
+    },
+
     tabs: {
         getAllInWindow: function(id, callback) {
             tabReq({type: 'tabs.getAllInWindow', id: id}, callback);
