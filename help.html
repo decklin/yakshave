@@ -10,12 +10,26 @@
 <body>
   <h1>YakShave Help</h1>
   <p>
-    Binding scripts are <code>eval()</code>'d from the content script.
-    They should call the functions
+    Binding scripts are <code>eval()</code>'d when YakShave starts or
+    when the list of scripts is changed. At the top level, they should
+    call the functions
   </p>
   <ul>
     <li><p><code>yak.functions.add()</code></p></li>
     <li><p><code>yak.bindings.add()</code></p></li>
+  </ul>
+  <p>
+    A typical script looks like:
+  </p>
+  <pre>yak.bindings.add({
+    'key': {
+        onkeydown: function(event) { ... }
+    }
+});</pre>
+  <p>
+    Bindings can use the functions
+  </p>
+  <ul>
     <li><p><code>yak.xhr()</code></p></li>
     <li><p><code>yak.tabs.*()</code></p></li>
   </ul>
